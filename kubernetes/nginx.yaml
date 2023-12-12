@@ -4,9 +4,9 @@ metadata:
   name: nginx-config
 data:
   nginx.conf: | 
-  events {}
-  http {
-    server {
+    events {}
+    http {
+      server {
         listen 80;
         location / {
           proxy_pass http://flask-app:5500;
