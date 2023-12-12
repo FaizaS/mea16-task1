@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: nginx-config
 data:
-  nginx.conf: | 
+  nginx.conf: |
     events {}
     http {
       server {
