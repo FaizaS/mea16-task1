@@ -1,7 +1,7 @@
 # Use Python 3.6 or later as a base image
-FROM python:3.6
+FROM python:latest
 # Copy contents into image
-WORKDIR /app
+#WORKDIR /app
 COPY . .
 # Install pip dependencies from requirements
 RUN pip install --upgrade pip
