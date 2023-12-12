@@ -2,47 +2,53 @@ pipeline {
     agent any
     stages {
 
-        stage('Init') {
+         stage('Init') {
+
             steps {
                 sh '''
-                ssh -i ~/.ssh/id_rsa jenkins@10.154.0.20 << EOF
-                docker network create jenk-network || echo "Network Already Exists"
-                docker stop flask-app || echo "flask-app Not Running"
-                docker stop nginx || echo "nginx Not Running"
-                docker rm flask-app || echo "flask-app Not Running"
-                docker rm nginx || echo "nginx Not Running"
+                ssh -i ~/.ssh/id_rsa jenkins@10.154.0.23 << EOF    
+                docker rm -f $(docker ps -qa) || true
+                docker network create new-network || true
                 '''
             }
+
         }
 
         stage('Build') {
-            steps {
-                sh '''
-                docker build -t stratcastor/flask-jenk:latest -t stratcastor/flask-jenk:v${BUILD_NUMBER} .
-                docker build -t stratcastor/nginx-jenk:latest -t stratcastor/nginx-jenk:v${BUILD_NUMBER} ./nginx
-                '''
-            }
-        }
 
-        stage('Push') {
             steps {
+
+                sh 'docker build -t faizashahid/fsapp:latest -t faizashahid/fsapp:v${BUILD_NUMBER} .'
+                sh 'docker build -t faizashahid/mynginx:latest -t faizashahid/mynginx:v${BUILD_NUMBER} ./nginx'
+
+            }
+
+        }
+        
+        stage('Push') {
+
+            steps {
+
                 sh '''
-                docker push stratcastor/flask-jenk:latest
-                docker push stratcastor/flask-jenk:v${BUILD_NUMBER}
-                docker push stratcastor/nginx-jenk:latest
-                docker push stratcastor/nginx-jenk:v${BUILD_NUMBER}
+                docker push faizashahid/fsapp:latest
+                docker push faizashahid/fsapp:v${BUILD_NUMBER}
+                docker push faizashahid/mynginx:latest
+                docker push faizashahid/fsapp:v${BUILD_NUMBER}
                 '''
             }
+
         }
 
         stage('Deploy') {
+
             steps {
                 sh '''
-                ssh -i ~/.ssh/id_rsa jenkins@10.154.0.20 << EOF
-                docker run -d --name flask-app --network jenk-network stratcastor/flask-jenk
-                docker run -d -p 80:80 --name nginx --network jenk-network stratcastor/nginx-jenk
+                ssh -i ~/.ssh/id_rsa jenkins@10.154.0.23 << EOF
+                docker run -d --name fsapp --network new-network faizashahid/fsapp:latest
+                docker run -d -p 80:80 --name mynginx --network new-network faizashahid/mynginx:latest
                 '''
             }
+
         }
 
         stage('CleanUp') {
@@ -51,9 +57,9 @@ pipeline {
                 sh '''
                 docker system prune -f 
                 '''
-
             }
         }
+
     }
 
 }
