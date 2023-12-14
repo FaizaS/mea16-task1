@@ -42,12 +42,12 @@ pipeline {
                     if (env.GIT_BRANCH == "origin/main") {
                         sh '''
                         docker push faizashahid/task1kube:latest
-                        docker push faizashahid/task1kube:prod-v${BUILD_NUMBER
+                        docker push faizashahid/task1kube:prod-v${BUILD_NUMBER}
                         '''
                     } else if (env.GIT_BRANCH == "origin/dev") {
                         sh '''
                         docker push faizashahid/task1kube:latest
-                        docker push faizashahid/task1kube:dev-v${BUILD_NUMBER
+                        docker push faizashahid/task1kube:dev-v${BUILD_NUMBER}
                         '''                   
                     } else {
                         sh '''
