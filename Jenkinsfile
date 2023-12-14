@@ -6,11 +6,11 @@ pipeline {
                 script{
                     if (env.GIT_BRANCH == "origin/main") {
                         sh'''
-                        Kubectl create namespace prod || echo "Namespace prod already exists"
+                        kubectl create namespace prod || echo "Namespace prod already exists"
                         '''
                     } else if (env.GIT_BRANCH == "origin/dev"){
                         sh '''
-                        Kubectl create namespace dev || echo "Namespace dev already exists"
+                        kubectl create namespace dev || echo "Namespace dev already exists"
                         '''
                     } else {
                         sh '''
@@ -67,7 +67,7 @@ pipeline {
                         kubectl set image deployment/flask-deployment task1=faizashahid/task1kube:prod-v${BUILD_NUMBER} -n prod
                         '''
                         } 
-                    else if (env.GIT_BRANCH == "origin/dev"){
+                    else if (env.GIT_BRANCH == "origin/dev") {
                         sh '''
                         kubectl apply -n dev -f ./kubernetes
                         kubectl set image deployment/flask-deployment task1=faizashahid/task1kube:dev-v${BUILD_NUMBER} -n dev
