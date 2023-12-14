@@ -17,7 +17,7 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deploymeny
+  name: nginx-deployment
   labels:
     app: nginx
 spec:
@@ -33,19 +33,19 @@ spec:
     metadata:
       labels:
         app: nginx
-  spec:
-    volumes:
+spec:
+  volumes:
     - name: nginx-volume
-    configMap:
-      name: nginx-config
+      configMap:
+        name: nginx-config
     containers:
     - name: nginx
-    image: nginx:latest
-    ports: 
-    - containerPort: 80
-    volumeMounts:
-    - name: nginx-volume
-      mountPath: /etc/nginx/
+      image: nginx:latest
+      ports: 
+      - containerPort: 80
+      volumeMounts:
+      - name: nginx-volume
+        mountPath: /etc/nginx/
 ---
 apiVersion: v1
 kind: Pod
