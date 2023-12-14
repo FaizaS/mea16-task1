@@ -33,39 +33,20 @@ spec:
     metadata:
       labels:
         app: nginx
-  spec:
-    volumes:
-    - name: nginx-volume
-      configMap:
-        name: nginx-config
-    containers:
-    - name: nginx
-      image: nginx:latest
-      ports: 
-      - containerPort: 80
-      volumeMounts:
+    spec:
+      volumes:
       - name: nginx-volume
-        mountPath: /etc/nginx/
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx-pod
-  labels:
-    app: nginx
-spec:
-  volumes:
-  - name: nginx-volume
-    configMap:
-      name: nginx-config
-  containers:
-  - name: nginx
-    image: nginx:latest
-    ports: 
-    - containerPort: 80
-    volumeMounts:
-    - name: nginx-volume
-      mountPath: /etc/nginx/
+        configMap:
+          name: nginx-config
+      containers:
+      - name: nginx
+        image: nginx:latest
+        imagePullPolicy: Always
+        ports: 
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-volume
+          mountPath: /etc/nginx/
 ---
 apiVersion: v1
 kind: Service
