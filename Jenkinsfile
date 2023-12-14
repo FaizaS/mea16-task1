@@ -67,7 +67,7 @@ pipeline {
                         kubectl set image deployment/flask-deployment task1=faizashahid/task1kube:prod-v${BUILD_NUMBER} -n prod
                         '''
                         } 
-                    else if (env.GIT_BRANCH == "origin/dev"){
+                    else if (env.GIT_BRANCH == "origin/dev") {
                         sh '''
                         kubectl apply -n dev -f ./kubernetes
                         kubectl set image deployment/flask-deployment task1=faizashahid/task1kube:dev-v${BUILD_NUMBER} -n dev
