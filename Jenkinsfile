@@ -4,15 +4,15 @@ pipeline {
         stage('Build') {
             steps {
 
-                sh 'docker build -t faizashahid/flask-jenk:latest -t faizashahid/flask-jenk:v${BUILD_NUMBER} .'
+                sh 'docker build -t faizashahid/task1kube:latest -t faizashahid/task1kube:v${BUILD_NUMBER} .'
             }
         }
 
         stage('Push') {
             steps {
                 sh '''
-                docker push faizashahid/flask-jenk:latest
-                docker push faizashahid/flask-jenk:v${BUILD_NUMBER}
+                docker push faizashahid/task1kube:latest
+                docker push faizashahid/task1kube:v${BUILD_NUMBER}
                 '''
             }
         }
@@ -21,8 +21,7 @@ pipeline {
             steps {
                 sh '''
                 kubectl apply -f ./kubernetes
-                kubectl rollout restart deployment flask-deployment
-                kubectl rollout restart deployment nginx-deployment
+                kubectl set image deployment/flask-deployment task1=faizashahid/task1kube:v${BUILD_NUMBER}
                 '''
             }
         }

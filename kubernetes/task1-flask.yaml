@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: task1
-        image: faizashahid/task1kube
+        image: faizashahid/task1kube:latest
         ports: 
         - containerPort: 5500
 ---
